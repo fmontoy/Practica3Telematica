@@ -22,7 +22,7 @@ class MapReduce(MRJob):
 
     def mapper(self,_,line):
         line = same(line)
-        fileName = fileName = os.environ['map_input_file']
+        fileName = os.environ['map_input_file']
 
         for word in line:
 
