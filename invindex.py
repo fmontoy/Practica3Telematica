@@ -10,6 +10,11 @@ def mongo():
 
 class MapReduce(MRJob):
     #Les quita las tildes a las letras de cada linea las pone en minuscula.
+    h = {}
+
+    def organizar(lista):
+        return sorted(lista,key=getkey)
+
     def same(a):
         a = ''.join((c for c in unicodedata.normalize('NFD', a) if unicodedata.category(c) != 'Mn'))
         a = a.lower()
@@ -20,14 +25,17 @@ class MapReduce(MRJob):
         fileName = fileName = os.environ['map_input_file']
 
         for word in line:
+
             h[(word,fileName)] +=1
 
-
+        for word in  h:
+             yield
 
     def reducer():
+        #Aqui hago el insert a mongo.
+        yield
 
 
-
-        if __name__ == '__main__':
-            mongo()
-            MapReduce.run()
+if __name__ == '__main__':
+        mongo()
+        MapReduce.run()
