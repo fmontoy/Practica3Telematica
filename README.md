@@ -1,5 +1,3 @@
-# Practica3Telematica
-
 ## Explicación:
  *Para esta práctica utilizaremos los libros de GutembergProject, con estos
  pretendemos utilizar el índice invertido para tener una lista de palabras
