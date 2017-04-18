@@ -1,3 +1,4 @@
+
 from mrjob.job import MRJob
 from pymongo import MongoClient
 import unicodedata
@@ -16,6 +17,7 @@ def elimina_tildes(s):
 
 def same(a):
     a = elimina_tildes(a.decode('utf-8'))
+    a = a.replace(',','').replace('.','').replace(';','')
     a = a.lower()
     a = a.split()
     return a
@@ -29,9 +31,9 @@ def organizar(lista):
 class MapReduce(MRJob):
 
     def mapper(self,_,line):
+        item=""
         line = same(line)
         fileName = os.environ['map_input_file']
-        item = ""
         for item in line:
             if item in h:
                 h[(item,fileName)] +=1
@@ -40,14 +42,17 @@ class MapReduce(MRJob):
         yield (item,fileName)
 
     def reducer(self,item,fileName):
-        p ={}
         item = ""
-
-        for item in h:
-            p[item] = (item,fileName)
-
+        p =
         p = organizar(p)
-        #Aqui hago el insert a mongo.
+
+        """result = db.collection.insert_one({
+            "index":{
+            "palabra": ,
+            "documento": ,
+            "numero":
+            }
+        })"""
 
         yield (item,p)
 
