@@ -5,8 +5,6 @@ import unicodedata
 import os
 import sys
 import re
-h = {}
-
 
 def mongo():
     client = MongoClient()
@@ -26,13 +24,16 @@ def same(a):
 class MapReduce(MRJob):
 
     def mapper(self,_,line):
+
         item = ""
         line = same(line)
         fileName = os.environ['map_input_file']
+        
         for item in line:
             yield (item,fileName)
 
     def reducer(self,item,fileNames):
+
         p = {}
         count = 0
         i = ""
@@ -41,10 +42,13 @@ class MapReduce(MRJob):
                p[i] = 1
             else:
                p[i] +=1
+
         l = p.items()
         l.sort(key=lambda x: x[1],reverse=True)
+
         yield (item,l)
 
 if __name__ == '__main__':
+
         mongo()
         MapReduce.run()
