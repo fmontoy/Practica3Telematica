@@ -47,7 +47,6 @@ class MapReduce(MRJob):
                p[i] = 1
             else:
                p[i] +=1
-
         p = organizar(p)
         yield (item,p)
 
