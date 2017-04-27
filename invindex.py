@@ -23,12 +23,6 @@ def same(a):
     a = a.split()
     return a
 
-def getkey(item):
-    return item[1]
-
-def organizar(lista):
-    return sorted(lista, key=getkey)
-
 class MapReduce(MRJob):
 
     def mapper(self,_,line):
@@ -47,9 +41,9 @@ class MapReduce(MRJob):
                p[i] = 1
             else:
                p[i] +=1
-        print p
-        yield (item,p)
-
+        l = p.items()
+        l.sort(key=lambda x: x[1],reverse=True)
+        yield (item,l)
 
 if __name__ == '__main__':
         mongo()
