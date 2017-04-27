@@ -7,6 +7,7 @@ import sys
 import re
 h = {}
 
+
 def mongo():
     client = MongoClient()
     db = client['hadoop']
@@ -31,29 +32,23 @@ def organizar(lista):
 class MapReduce(MRJob):
 
     def mapper(self,_,line):
-        item=""
+        item = ""
         line = same(line)
         fileName = os.environ['map_input_file']
         for item in line:
-            if item in h:
-                h[(item,fileName)] +=1
+            yield (item,fileName)
+
+    def reducer(self,item,fileNames):
+        p = {}
+        count = 0
+        i = ""
+        for i in fileNames:
+            if i not in p:
+               p[i] = 1
             else:
-                h[(item,fileName)] =1
-        yield (item,fileName)
+               p[i] +=1
 
-    def reducer(self,item,fileName):
-        item = ""
-        p =
         p = organizar(p)
-
-        """result = db.collection.insert_one({
-            "index":{
-            "palabra": ,
-            "documento": ,
-            "numero":
-            }
-        })"""
-
         yield (item,p)
 
 
