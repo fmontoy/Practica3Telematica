@@ -6,10 +6,9 @@ import os
 import sys
 import re
 
-def mongo():
-    client = MongoClient()
-    db = client['hadoop']
-    collection = db['words-books']
+client = MongoClient('localhost',27017)
+db = client['hadoop']
+collection = db['coll']
 
 def elimina_tildes(s):
    return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
@@ -27,13 +26,12 @@ class MapReduce(MRJob):
 
         item = ""
         line = same(line)
-        fileName = os.environ['map_input_file']
-        
+        fileName = str(os.environ['map_input_file'])
+
         for item in line:
             yield (item,fileName)
 
     def reducer(self,item,fileNames):
-
         p = {}
         count = 0
         i = ""
@@ -45,10 +43,11 @@ class MapReduce(MRJob):
 
         l = p.items()
         l.sort(key=lambda x: x[1],reverse=True)
+        post = { "word" : item, "files" : str(l)}
+        collection.insert_one(post)
 
         yield (item,l)
 
 if __name__ == '__main__':
 
-        mongo()
         MapReduce.run()
